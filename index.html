@@ -45,10 +45,10 @@
         }
     </script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased relative">
 
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl">⚡</span>
@@ -85,6 +85,9 @@
                             <option value="Cyberpunk style, neon lights, dark atmosphere">Cyberpunk</option>
                             <option value="Cinematic render, Unreal Engine 5, dramatic lighting">Cinemático 3D</option>
                             <option value="Anime style, Studio Ghibli inspired, vibrant colors">Anime / Ghibli</option>
+                            <!-- OPCIONES PRO CON CANDADO -->
+                            <option value="PRO_LOCKED" class="text-amber-400 font-semibold">🔒 Hyper-realistic Unreal Engine 5.4 Render [PRO]</option>
+                            <option value="PRO_LOCKED" class="text-amber-400 font-semibold">🔒 Editorial Vogue Magazine Fashion Shot [PRO]</option>
                         </select>
                     </div>
 
@@ -97,6 +100,8 @@
                             <option value="Volumetric fog, moody atmospheric lighting">Atmósferico / Niebla</option>
                             <option value="Studio lighting, soft shadows, clean reflections">Estudio Fotográfico</option>
                             <option value="Dramatic chiaroscuro, high contrast, deep shadows">Contraste Dramático</option>
+                            <!-- OPCIONES PRO CON CANDADO -->
+                            <option value="PRO_LOCKED" class="text-amber-400 font-semibold">🔒 Bioluminescent Ray-Tracing Studio Light [PRO]</option>
                         </select>
                     </div>
 
@@ -109,6 +114,8 @@
                             <option value="Wide angle shot, 16mm lens, sweeping view">Gran Angular (16mm)</option>
                             <option value="Macro shot, extreme close-up details">Macro (Detalle de cerca)</option>
                             <option value="Drone aerial view, top-down perspective">Toma Aérea / Dron</option>
+                            <!-- OPCIONES PRO CON CANDADO -->
+                            <option value="PRO_LOCKED" class="text-amber-400 font-semibold">🔒 Hasselblad Medium Format 85mm f/1.2 [PRO]</option>
                         </select>
                     </div>
 
@@ -141,6 +148,16 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                     <span>Copiar Prompt Optimizado</span>
                 </button>
+
+                <!-- Banner de Incentivo post-copia -->
+                <div id="post-copy-banner" class="hidden bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-center transition">
+                    <p class="text-xs text-slate-300">
+                        ☕ <strong>¿Te sirvió la herramienta?</strong> Apoyá el proyecto en Ko-fi para obtener el <strong>Pack PDF con 50 Prompts Pro</strong>.
+                    </p>
+                    <a href="https://ko-fi.com/promptcraft2026" target="_blank" class="inline-block mt-2 text-xs font-semibold text-brand-400 hover:underline">
+                        Obtener Pack Pro por $2 USD →
+                    </a>
+                </div>
             </div>
 
         </section>
@@ -191,6 +208,31 @@
         <p>© 2026 PromptCraft AI. Herramienta gratuita para creadores de contenido visual.</p>
     </footer>
 
+    <!-- Modal PRO (Pop-up de Venta) -->
+    <div id="pro-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
+            <button id="close-modal" class="absolute top-3 right-3 text-slate-500 hover:text-slate-300 text-lg">✕</button>
+
+            <div class="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-2xl">
+                🔒
+            </div>
+
+            <h3 class="text-base font-bold text-slate-100">Parámetro Exclusivo Pro</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Esta combinación avanzada e hiperrealista y <strong>50 prompts probados listos para usar</strong> están incluidos en nuestro Pack PDF oficial.
+            </p>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3">
+                <p class="text-[11px] text-brand-400 font-semibold">Descarga inmediata por solo $2 USD</p>
+            </div>
+
+            <a href="https://ko-fi.com/promptcraft2026" target="_blank" 
+               class="block w-full py-3 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-lg transition shadow-lg shadow-brand-600/20">
+                Obtener Pack Pro en Ko-fi 🚀
+            </a>
+        </div>
+    </div>
+
     <!-- App Logic -->
     <script>
         const baseConcept = document.getElementById('base-concept');
@@ -201,6 +243,10 @@
         const outputPrompt = document.getElementById('output-prompt');
         const copyBtn = document.getElementById('copy-btn');
         const copyStatus = document.getElementById('copy-status');
+        const postCopyBanner = document.getElementById('post-copy-banner');
+
+        const proModal = document.getElementById('pro-modal');
+        const closeModal = document.getElementById('close-modal');
 
         function updatePrompt() {
             const concept = baseConcept.value.trim();
@@ -213,17 +259,34 @@
             outputPrompt.classList.remove('italic', 'text-slate-500');
             
             let parts = [concept];
-            if (styleSelect.value) parts.push(styleSelect.value);
-            if (lightingSelect.value) parts.push(lightingSelect.value);
-            if (cameraSelect.value) parts.push(cameraSelect.value);
+            if (styleSelect.value && styleSelect.value !== 'PRO_LOCKED') parts.push(styleSelect.value);
+            if (lightingSelect.value && lightingSelect.value !== 'PRO_LOCKED') parts.push(lightingSelect.value);
+            if (cameraSelect.value && cameraSelect.value !== 'PRO_LOCKED') parts.push(cameraSelect.value);
             if (arSelect.value) parts.push(arSelect.value);
 
             outputPrompt.textContent = parts.join(', ');
         }
 
-        [baseConcept, styleSelect, lightingSelect, cameraSelect, arSelect].forEach(element => {
-            element.addEventListener('input', updatePrompt);
-            element.addEventListener('change', updatePrompt);
+        // Manejador de opciones bloqueadas PRO
+        function handleProCheck(e) {
+            if (e.target.value === 'PRO_LOCKED') {
+                proModal.classList.remove('hidden');
+                e.target.value = ''; // Reset select
+                updatePrompt();
+            } else {
+                updatePrompt();
+            }
+        }
+
+        [styleSelect, lightingSelect, cameraSelect].forEach(element => {
+            element.addEventListener('change', handleProCheck);
+        });
+
+        baseConcept.addEventListener('input', updatePrompt);
+        arSelect.addEventListener('change', updatePrompt);
+
+        closeModal.addEventListener('click', () => {
+            proModal.classList.add('hidden');
         });
 
         copyBtn.addEventListener('click', () => {
@@ -232,6 +295,7 @@
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 copyStatus.classList.remove('hidden');
+                postCopyBanner.classList.remove('hidden'); // Muestra banner de donación al copiar
                 setTimeout(() => copyStatus.classList.add('hidden'), 2500);
             });
         });
