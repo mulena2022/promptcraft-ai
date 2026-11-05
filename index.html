@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Meta etiquetas SEO -->
-    <title>Free AI Prompt Generator - Midjourney & DALL-E Builder</title>
-    <meta name="description" content="Free tool to build photorealistic AI prompts for Midjourney, DALL-E, and Stable Diffusion. Select styles, lighting, and aspect ratios instantly.">
-    <meta name="keywords" content="midjourney prompt generator, ai prompt builder, free prompt maker, dall-e prompts">
+    <title>PromptCraft AI - Generador de Prompts para Midjourney y DALL-E</title>
+    <meta name="description" content="Herramienta gratuita para crear y optimizar prompts fotorrealistas para Midjourney, DALL-E y Stable Diffusion. Mejore sus resultados con IA fácilmente.">
+    <meta name="keywords" content="Prompt Generator, Midjourney Prompts, DALL-E Prompts, Generador de Prompts, AI Image Prompts">
+    <meta name="author" content="PromptCraft AI">
+    <meta name="robots" content="index, follow">
     
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://promptcraft-ai-two.vercel.app">
+    <meta property="og:title" content="PromptCraft AI - Generador de Prompts para IA">
+    <meta property="og:description" content="Crea prompts fotorrealistas y optimizados para Midjourney, DALL-E y Stable Diffusion en segundos.">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,207 +23,195 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { 500: '#6366f1', 600: '#4f46e5' }
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
 
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-10">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span class="text-2xl">⚡</span>
-                <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                    PromptCraft AI
-                </h1>
+                <h1 class="text-xl font-bold bg-gradient-to-r from-brand-500 to-emerald-400 bg-clip-text text-transparent">PromptCraft AI</h1>
             </div>
-            <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2.5 py-1 rounded-full">
-                Gratis & Open Tool
-            </span>
+            <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full border border-slate-700">v1.0 Free</span>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-5xl mx-auto px-4 py-8 w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        <!-- Controls Column (Left - 2 Cols) -->
-        <div class="lg:col-span-2 space-y-6">
+        <!-- Controls Column -->
+        <section class="md:col-span-2 space-y-6">
             
-            <!-- 1. Sujeto Principal -->
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <label class="block text-sm font-medium text-slate-300 mb-2">1. Sujeto o Idea Principal</label>
-                <input type="text" id="subjectInput" 
-                       placeholder="Ej: Un astronauta explorando un templo antiguo en Marte" 
-                       class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-indigo-500 transition">
+            <!-- Main Input -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                <label for="base-concept" class="block text-sm font-medium text-slate-300 mb-2">Concepto Principal / Idea Base</label>
+                <textarea id="base-concept" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition text-sm" placeholder="Ej: Un astronauta explorando un templo antiguo en Marte..."></textarea>
             </div>
 
-            <!-- 2. Estilo Artístico -->
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <label class="block text-sm font-medium text-slate-300 mb-3">2. Estilo Visual</label>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="styleOptions">
-                    <button type="button" data-value="Cyberpunk neon style" class="option-btn border border-slate-700 bg-slate-950 hover:border-indigo-500 p-2.5 rounded-lg text-sm transition text-left">🌆 Cyberpunk</button>
-                    <button type="button" data-value="Cinematic 35mm film photograph" class="option-btn border border-slate-700 bg-slate-950 hover:border-indigo-500 p-2.5 rounded-lg text-sm transition text-left">🎬 Fotografía Cine</button>
-                    <button type="button" data-value="Anime style, highly detailed" class="option-btn border border-slate-700 bg-slate-950 hover:border-indigo-500 p-2.5 rounded-lg text-sm transition text-left">🎨 Anime / Manga</button>
-                    <button type="button" data-value="3D Octane Render, hyper-realistic" class="option-btn border border-slate-700 bg-slate-950 hover:border-indigo-500 p-2.5 rounded-lg text-sm transition text-left">💎 Render 3D</button>
-                    <button type="button" data-value="Oil painting, impressionist style" class="option-btn border border-slate-700 bg-slate-950 hover:border-indigo-500 p-2.5 rounded-lg text-sm transition text-left">🖼️ Pintura al Óleo</button>
-                    <button type="button" data-value="Minimalist vector illustration" class="option-btn border border-slate-700 bg-slate-950 hover:border-indigo-500 p-2.5 rounded-lg text-sm transition text-left">✏️ Vector Ilustración</button>
+            <!-- Modifiers Grid -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+                <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Parámetros de Estilo</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Style -->
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Estilo Visual</label>
+                        <select id="style-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-slate-300 focus:outline-none focus:border-brand-500">
+                            <option value="">Sin especificar</option>
+                            <option value="Photorealistic, 8k resolution, highly detailed">Fotorrealista (8K)</option>
+                            <option value="Digital Painting, concept art, smooth lighting">Pintura Digital</option>
+                            <option value="Cyberpunk style, neon lights, dark atmosphere">Cyberpunk</option>
+                            <option value="Cinematic render, Unreal Engine 5, dramatic lighting">Cinemático 3D</option>
+                            <option value="Anime style, Studio Ghibli inspired, vibrant colors">Anime / Ghibli</option>
+                        </select>
+                    </div>
+
+                    <!-- Lighting -->
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Iluminación</label>
+                        <select id="lighting-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-slate-300 focus:outline-none focus:border-brand-500">
+                            <option value="">Sin especificar</option>
+                            <option value="Golden hour lighting, warm glow">Hora Dorada (Warm)</option>
+                            <option value="Volumetric fog, moody atmospheric lighting">Atmósferico / Niebla</option>
+                            <option value="Studio lighting, soft shadows, clean reflections">Estudio Fotográfico</option>
+                            <option value="Dramatic chiaroscuro, high contrast, deep shadows">Contraste Dramático</option>
+                        </select>
+                    </div>
+
+                    <!-- Camera / Lens -->
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Cámara / Lente</label>
+                        <select id="camera-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-slate-300 focus:outline-none focus:border-brand-500">
+                            <option value="">Sin especificar</option>
+                            <option value="Shot on 35mm lens, f/1.8, shallow depth of field">35mm (Fondo desenfocado)</option>
+                            <option value="Wide angle shot, 16mm lens, sweeping view">Gran Angular (16mm)</option>
+                            <option value="Macro shot, extreme close-up details">Macro (Detalle de cerca)</option>
+                            <option value="Drone aerial view, top-down perspective">Toma Aérea / Dron</option>
+                        </select>
+                    </div>
+
+                    <!-- Aspect Ratio -->
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Formato (Aspect Ratio)</label>
+                        <select id="ar-select" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm text-slate-300 focus:outline-none focus:border-brand-500">
+                            <option value="">Predeterminado</option>
+                            <option value="--ar 16:9">16:9 (Horizontal / Youtube)</option>
+                            <option value="--ar 9:16">9:16 (Vertical / Stories/Reels)</option>
+                            <option value="--ar 1:1">1:1 (Cuadrado)</option>
+                            <option value="--ar 4:3">4:3 (Estándar)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <!-- 3. Iluminación y Cámara -->
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">3. Iluminación</label>
-                    <select id="lightingSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
-                        <option value="">Ninguna elegida</option>
-                        <option value="volumetric golden hour lighting">Hora Dorada (Golden Hour)</option>
-                        <option value="dramatic neon backlight">Luz Neón Dramática</option>
-                        <option value="soft studio lighting with soft shadows">Estudio Suave</option>
-                        <option value="dark moody cinematic lighting">Oscura y Cinematográfica</option>
-                    </select>
+            <!-- Output Result -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-semibold text-slate-300">Prompt Generado</h2>
+                    <span id="copy-status" class="text-xs text-brand-500 hidden font-medium">¡Copiado al portapapeles!</span>
+                </div>
+                
+                <div id="output-prompt" class="min-h-[80px] w-full bg-slate-950 border border-slate-800 rounded-lg p-4 text-slate-300 text-sm break-words flex items-center justify-center text-center italic text-slate-500">
+                    Escribe una idea arriba para ver tu prompt optimizado aquí...
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">4. Plano / Ángulo</label>
-                    <select id="cameraSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 text-sm focus:outline-none focus:border-indigo-500">
-                        <option value="">Ninguno elegido</option>
-                        <option value="wide-angle close-up shot">Plano Cerca (Close-up)</option>
-                        <option value="epic wide shot panoramic view">Plano Panorámico Épico</option>
-                        <option value="drone aerial perspective view">Vista Aérea / Dron</option>
-                        <option value="macro detail shot 85mm lens">Detalle Macro</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- 5. Parámetros Midjourney / SD -->
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <label class="block text-sm font-medium text-slate-300 mb-2">5. Formato / Aspect Ratio</label>
-                <div class="flex flex-wrap gap-3" id="arOptions">
-                    <button type="button" data-ar="--ar 16:9" class="ar-btn border border-slate-700 bg-slate-950 px-3.5 py-1.5 rounded-lg text-sm">16:9 (Horizontal/YouTube)</button>
-                    <button type="button" data-ar="--ar 9:16" class="ar-btn border border-slate-700 bg-slate-950 px-3.5 py-1.5 rounded-lg text-sm">9:16 (Vertical/Reels/TikTok)</button>
-                    <button type="button" data-ar="--ar 1:1" class="ar-btn border border-slate-700 bg-slate-950 px-3.5 py-1.5 rounded-lg text-sm">1:1 (Cuadrado)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Output Column (Right - 1 Col) -->
-        <div class="space-y-6">
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 sticky top-24">
-                <h2 class="text-lg font-bold text-slate-200 mb-3 flex items-center justify-between">
-                    <span>Prompt Generado</span>
-                    <span class="text-xs text-indigo-400 font-normal">Formato en Inglés</span>
-                </h2>
-
-                <div id="outputBox" class="bg-slate-950 p-4 rounded-lg border border-slate-800 text-slate-300 font-mono text-sm min-h-[140px] break-words">
-                    Escribe tu idea en la izquierda para ver la magia...
-                </div>
-
-                <button id="copyBtn" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-lg transition flex items-center justify-center space-x-2">
-                    <span>📋 Copiar Prompt</span>
+                <button id="copy-btn" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-medium py-3 px-4 rounded-lg transition duration-200 shadow-lg shadow-brand-600/20 active:scale-[0.99] flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 2 0 01-2-2V6a2 2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>Copiar Prompt Optimizado</span>
                 </button>
-
-                <!-- Espacio preparado para Monetización / Publicidad -->
-                <div class="mt-8 border border-dashed border-slate-800 rounded-lg p-4 text-center">
-                    <p class="text-xs text-slate-500">Espacio Publicitario / Google AdSense</p>
-                </div>
             </div>
-        </div>
+
+        </section>
+
+        <!-- Sidebar / Support section -->
+        <aside class="space-y-6">
+            
+            <!-- Quick Tips Card -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center space-x-2">
+                    <span>💡</span>
+                    <span>Consejos de Uso</span>
+                </h3>
+                <ul class="text-xs text-slate-400 space-y-2 leading-relaxed">
+                    <li>• Sé descriptivo en el sujeto principal.</li>
+                    <li>• Evita palabras negativas directas en la idea base.</li>
+                    <li>• Usa <strong>--ar 16:9</strong> para fondos de pantalla e imágenes cinemáticas.</li>
+                </ul>
+            </div>
+
+            <!-- Ko-fi Support Button -->
+            <div class="p-5 rounded-xl bg-slate-900/80 border border-slate-800 text-center shadow-xl">
+                <p class="text-xs text-slate-400 mb-3">¿Te sirvió la herramienta?</p>
+                <a href="https://ko-fi.com/promptcraft2026" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition space-x-2">
+                    <span>☕ Apoyar en Ko-fi</span>
+                </a>
+            </div>
+
+        </aside>
 
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500">
-        Construido con HTML + Tailwind CSS. 100% Client-Side.
+    <footer class="border-t border-slate-800 bg-slate-900/30 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 PromptCraft AI. Herramienta gratuita para creadores de contenido visual.</p>
     </footer>
 
-    <!-- JavaScript Lógica App -->
+    <!-- App Logic -->
     <script>
-        let selectedStyle = '';
-        let selectedAR = '';
+        const baseConcept = document.getElementById('base-concept');
+        const styleSelect = document.getElementById('style-select');
+        const lightingSelect = document.getElementById('lighting-select');
+        const cameraSelect = document.getElementById('camera-select');
+        const arSelect = document.getElementById('ar-select');
+        const outputPrompt = document.getElementById('output-prompt');
+        const copyBtn = document.getElementById('copy-btn');
+        const copyStatus = document.getElementById('copy-status');
 
-        const subjectInput = document.getElementById('subjectInput');
-        const lightingSelect = document.getElementById('lightingSelect');
-        const cameraSelect = document.getElementById('cameraSelect');
-        const outputBox = document.getElementById('outputBox');
-        const copyBtn = document.getElementById('copyBtn');
-
-        // Manejar selección de botones de Estilo
-        document.querySelectorAll('.option-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-950/40'));
-                if (selectedStyle === btn.dataset.value) {
-                    selectedStyle = '';
-                } else {
-                    selectedStyle = btn.dataset.value;
-                    btn.classList.add('border-indigo-500', 'bg-indigo-950/40');
-                }
-                updatePrompt();
-            });
-        });
-
-        // Manejar selección de Aspect Ratio
-        document.querySelectorAll('.ar-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.ar-btn').forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-950/40'));
-                if (selectedAR === btn.dataset.ar) {
-                    selectedAR = '';
-                } else {
-                    selectedAR = btn.dataset.ar;
-                    btn.classList.add('border-indigo-500', 'bg-indigo-950/40');
-                }
-                updatePrompt();
-            });
-        });
-
-        // Escuchar inputs
-        subjectInput.addEventListener('input', updatePrompt);
-        lightingSelect.addEventListener('change', updatePrompt);
-        cameraSelect.addEventListener('change', updatePrompt);
-
-        // Función constructora del Prompt
         function updatePrompt() {
-            const subject = subjectInput.value.trim();
-            
-            if (!subject) {
-                outputBox.textContent = "Escribe tu idea a la izquierda para empezar...";
+            const concept = baseConcept.value.trim();
+            if (!concept) {
+                outputPrompt.textContent = 'Escribe una idea arriba para ver tu prompt optimizado aquí...';
+                outputPrompt.classList.add('italic', 'text-slate-500');
                 return;
             }
 
-            let parts = [subject];
-
-            if (selectedStyle) parts.push(selectedStyle);
-            if (cameraSelect.value) parts.push(cameraSelect.value);
-            if (lightingSelect.value) parts.push(lightingSelect.value);
+            outputPrompt.classList.remove('italic', 'text-slate-500');
             
-            // Añadir calidad por defecto
-            parts.push("8k resolution, highly detailed, photorealistic");
+            let parts = [concept];
+            if (styleSelect.value) parts.push(styleSelect.value);
+            if (lightingSelect.value) parts.push(lightingSelect.value);
+            if (cameraSelect.value) parts.push(cameraSelect.value);
+            if (arSelect.value) parts.push(arSelect.value);
 
-            let finalPrompt = parts.join(", ");
-
-            if (selectedAR) {
-                finalPrompt += ` ${selectedAR}`;
-            }
-
-            outputBox.textContent = finalPrompt;
+            outputPrompt.textContent = parts.join(', ');
         }
 
-        // Función Copiar al Portapapeles
+        [baseConcept, styleSelect, lightingSelect, cameraSelect, arSelect].forEach(element => {
+            element.addEventListener('input', updatePrompt);
+            element.addEventListener('change', updatePrompt);
+        });
+
         copyBtn.addEventListener('click', () => {
-            const textToCopy = outputBox.textContent;
-            if (textToCopy && !textToCopy.startsWith("Escribe tu idea")) {
-                navigator.clipboard.writeText(textToCopy);
-                const originalText = copyBtn.innerHTML;
-                copyBtn.innerHTML = "¡Copiado con éxito! ✨";
-                copyBtn.classList.replace('bg-indigo-600', 'bg-emerald-600');
-                setTimeout(() => {
-                    copyBtn.innerHTML = originalText;
-                    copyBtn.classList.replace('bg-emerald-600', 'bg-indigo-600');
-                }, 2000);
-            }
+            const textToCopy = outputPrompt.textContent;
+            if (!textToCopy || baseConcept.value.trim() === '') return;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                copyStatus.classList.remove('hidden');
+                setTimeout(() => copyStatus.classList.add('hidden'), 2500);
+            });
         });
     </script>
 </body>
